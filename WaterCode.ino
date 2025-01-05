@@ -67,7 +67,6 @@ void setup() {
   Serial.begin(9600);
   pinMode(waterPump, OUTPUT);
   digitalWrite(waterPump, LOW); // Ensure pump is off initially
-
   connectToWiFi();
   // Call the function to read soil moisture periodically
   timer.setInterval(3000L, soilMoistureSensor);
@@ -166,7 +165,7 @@ int readSoilMoistureMedian() {
 
 // Non-blocking automatic watering check
 void checkAutomaticWatering() {
-  if (isAutomatic && !Relay && moisturePercent < 60 && !watering) {
+  if (isAutomatic && !Relay && moisturePercent < 70 && !watering) {
     watering = true;
     lastPumpTime = millis();
     Serial.println("Automatic watering started.");
@@ -174,7 +173,7 @@ void checkAutomaticWatering() {
 
   if (watering) {
     unsigned long currentTime = millis();
-    if (moisturePercent >= 80) {
+    if (moisturePercent >= 90) {
       watering = false;
       digitalWrite(waterPump, LOW);
       motorJustTurnedOff = true; // Set flag to trigger data upload
